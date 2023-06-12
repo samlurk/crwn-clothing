@@ -3,8 +3,8 @@ import { CategoryListContainer } from "./index.styles";
 
 const CategoryList = ({ categories }) => (
   <CategoryListContainer>
-    {categories.map((category) => {
-      return <CategoryCard category={category} key={category.title} />;
+    {categories.map((category, index) => {
+      return <CategoryCard category={category} key={index} />;
     })}
   </CategoryListContainer>
 );

@@ -5,17 +5,16 @@ import FormInput from "../FormInput";
 import { SignIn, ButtonContainer, Form, Title } from "./index.styles";
 import Button, { BUTTON_TYPE_CLASSES } from "../Button";
 import { useGoogleLogin } from "@react-oauth/google";
-import { AuthContext } from "../../contexts/Auth";
-import { useContext } from "react";
+import { login } from "../../store/Auth/action";
+import { useDispatch } from "react-redux";
 
 const SignInForm = () => {
-  const { login } = useContext(AuthContext);
-
+  const dispatch = useDispatch();
   const onSubmit = async (values, actions) => {
     try {
       const { ...user } = values;
       const { ACCESS_TOKEN } = await httpService.post("auth/login", user);
-      login(ACCESS_TOKEN);
+      dispatch(login(ACCESS_TOKEN));
       actions.resetForm();
     } catch (error) {
       alert(error.message);
@@ -29,7 +28,7 @@ const SignInForm = () => {
         const { ACCESS_TOKEN } = await httpService.post("auth/login-google", {
           code: codeResponse.code,
         });
-        login(ACCESS_TOKEN);
+        dispatch(login(ACCESS_TOKEN));
       } catch (error) {
         if (
           error.message !== "The email/username doesn't exists" ||

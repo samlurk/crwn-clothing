@@ -4,16 +4,16 @@ import httpService from "../../services/Http";
 import FormInput from "../FormInput";
 import { SignUp, Title, Form } from "./index.styles";
 import Button from "../Button";
-import { AuthContext } from "../../contexts/Auth";
-import { useContext } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/Auth/action";
 
 const SignUpForm = () => {
-  const { login } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const onSubmit = async (values, actions) => {
     try {
       const { confirmPassword, ...formData } = values;
       const { ACCESS_TOKEN } = await httpService.post("auth/signup", formData);
-      login(ACCESS_TOKEN);
+      dispatch(login(ACCESS_TOKEN));
       actions.resetForm();
     } catch (error) {
       alert(error.message);
