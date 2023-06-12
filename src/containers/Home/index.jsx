@@ -1,24 +1,25 @@
 import { useEffect } from "react";
 import CategoryList from "../../components/Category/CategoryList";
-import httpService from "../../services/Http";
-import { setCategories } from "../../store/Categories/action";
-import { selectCategories } from "../../store/Categories/selector";
+import { fetchCategoriesAsync } from "../../store/Categories/action";
+import {
+  selectCategories,
+  selectCategoryIsLoading,
+} from "../../store/Categories/selector";
 import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../../components/Spinner";
 
 function Home() {
   const dispatch = useDispatch();
-
   const categories = useSelector(selectCategories);
+  const isLoading = useSelector(selectCategoryIsLoading);
+
   useEffect(() => {
-    const fetchCategories = async () => {
-      let response = await httpService.get("category");
-      dispatch(setCategories(response));
-    };
-    fetchCategories();
+    dispatch(fetchCategoriesAsync());
   }, []);
+
   return (
     <main>
-      <CategoryList categories={categories} />
+      {isLoading ? <Spinner /> : <CategoryList categories={categories} />}
     </main>
   );
 }

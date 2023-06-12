@@ -9,6 +9,11 @@ export const selectCategories = createSelector(
   (categorySlice) => categorySlice.categories
 );
 
+export const selectCategoryIsLoading = createSelector(
+  [selectCategoryReducer],
+  (categorySlice) => categorySlice.isLoading
+);
+
 //* Products By Categories
 
 const selectProductsByCategories = createSelector(

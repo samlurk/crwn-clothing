@@ -2,19 +2,14 @@ import { Routes, Route } from "react-router-dom";
 import CategoriesPreview from "../../containers/CategoriesPreview";
 import Category from "../../containers/Category";
 import { useEffect } from "react";
-import { setProductsByCategories } from "../../store/Categories/action";
+import { fetchProductsByCategoriesAsync } from "../../store/Categories/action";
 import { useDispatch } from "react-redux";
-import httpService from "../../services/Http";
 
 const Shop = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchProductsByCategories = async () => {
-      let response = await httpService.get("category/products");
-      dispatch(setProductsByCategories(response));
-    };
-    fetchProductsByCategories();
+    dispatch(fetchProductsByCategoriesAsync());
   }, []);
   return (
     <Routes>
