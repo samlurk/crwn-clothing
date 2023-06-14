@@ -1,4 +1,3 @@
-import httpService from "../../services/Http";
 import { createAction } from "../../utils/Reducer";
 import { CATEGORIES_ACTION_TYPES } from "./types";
 
@@ -12,16 +11,6 @@ export const fetchCategoriesSucess = (categories) =>
 
 export const fetchCategoriesFailed = (error) =>
   createAction(CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_FAILED, error);
-
-export const fetchCategoriesAsync = () => async (dispatch) => {
-  dispatch(fetchCategoriesStart());
-  try {
-    let categoriesResponse = await httpService.get("category");
-    dispatch(fetchCategoriesSucess(categoriesResponse));
-  } catch (error) {
-    dispatch(fetchCategoriesFailed(error.message));
-  }
-};
 
 //* ProductsByCategories
 
@@ -39,15 +28,3 @@ export const fetchProductsByCategoriesFailed = (error) =>
     CATEGORIES_ACTION_TYPES.FETCH_PRODUCTS_BY_CATEGORIES_FAILED,
     error
   );
-
-export const fetchProductsByCategoriesAsync = () => async (dispatch) => {
-  dispatch(fetchProductsByCategoriesStart());
-  try {
-    let productsByCategoriesResponse = await httpService.get(
-      "category/products"
-    );
-    dispatch(fetchProductsByCategoriesSucess(productsByCategoriesResponse));
-  } catch (error) {
-    dispatch(fetchProductsByCategoriesFailed(error.message));
-  }
-};
