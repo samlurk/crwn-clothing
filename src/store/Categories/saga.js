@@ -10,7 +10,7 @@ import { CATEGORIES_ACTION_TYPES } from "./types";
 
 export function* fetchCategoriesAsync() {
   try {
-    let categoriesResponse = yield call(httpService.get, "category");
+    const categoriesResponse = yield call(httpService.get, "category");
     yield put(fetchCategoriesSucess(categoriesResponse));
   } catch (error) {
     yield put(fetchCategoriesFailed(error.message));
@@ -26,7 +26,10 @@ export function* onFetchCategories() {
 
 export function* fetchProductsByCategoriesAsync() {
   try {
-    let productsByCategories = yield call(httpService.get, "category/products");
+    const productsByCategories = yield call(
+      httpService.get,
+      "category/products"
+    );
     yield put(fetchProductsByCategoriesSucess(productsByCategories));
   } catch (error) {
     yield put(fetchProductsByCategoriesFailed(error.message));

@@ -6,21 +6,18 @@ import Shop from "./routes/Shop";
 import Checkout from "./containers/Checkout";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { setCurrentUser } from "./store/User/action";
-import jwtDecode from "jwt-decode";
-import { selectIsAuthenticated, selectToken } from "./store/Auth/selector";
-import { logout } from "./store/Auth/action";
+import { selectToken } from "./store/Auth/selector";
+import { checkUserSession } from "./store/Auth/action";
 
 const App = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(selectIsAuthenticated);
   const token = useSelector(selectToken);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(setCurrentUser(jwtDecode(token)));
-    } else dispatch(logout());
-  }, [isAuthenticated]);
+    if (token) {
+      dispatch(checkUserSession(token));
+    }
+  }, []);
 
   return (
     <Routes>

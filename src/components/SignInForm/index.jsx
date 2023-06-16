@@ -1,42 +1,26 @@
 import { useFormik } from "formik";
 import { SignInSchema } from "../../schemas/SignIn";
-import httpService from "../../services/Http";
 import FormInput from "../FormInput";
 import { SignIn, ButtonContainer, Form, Title } from "./index.styles";
 import Button, { BUTTON_TYPE_CLASSES } from "../Button";
 import { useGoogleLogin } from "@react-oauth/google";
-import { login } from "../../store/Auth/action";
+import {
+  googleSignInStart,
+  usernameSignInStart,
+} from "../../store/Auth/action";
 import { useDispatch } from "react-redux";
 
 const SignInForm = () => {
   const dispatch = useDispatch();
   const onSubmit = async (values, actions) => {
-    try {
-      const { ...user } = values;
-      const { ACCESS_TOKEN } = await httpService.post("auth/login", user);
-      dispatch(login(ACCESS_TOKEN));
-      actions.resetForm();
-    } catch (error) {
-      alert(error.message);
-    }
+    dispatch(usernameSignInStart(values));
+    actions.resetForm();
   };
 
   const signInWithGoogle = useGoogleLogin({
     flow: "auth-code",
-    onSuccess: async (codeResponse) => {
-      try {
-        const { ACCESS_TOKEN } = await httpService.post("auth/login-google", {
-          code: codeResponse.code,
-        });
-        dispatch(login(ACCESS_TOKEN));
-      } catch (error) {
-        if (
-          error.message !== "The email/username doesn't exists" ||
-          error.message !== "Incorrect password"
-        )
-          alert(error.message);
-      }
-    },
+    onSuccess: async (codeResponse) =>
+      dispatch(googleSignInStart(codeResponse)),
   });
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =

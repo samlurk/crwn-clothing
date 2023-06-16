@@ -10,16 +10,16 @@ import {
   Header,
   LogoContainer,
 } from "./index.styles";
-import { logout } from "../../store/Auth/action";
+import { signOutStart } from "../../store/Auth/action";
 import { useDispatch, useSelector } from "react-redux";
-import { selectIsAuthenticated } from "../../store/Auth/selector";
+import { selectToken } from "../../store/Auth/selector";
 import { selectIsCartOpen } from "../../store/Cart/selector";
 
 const Navigation = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAuthenticated = useSelector(selectToken);
   const isCartOpen = useSelector(selectIsCartOpen);
-  const logoutHandler = () => dispatch(logout());
+  const signOutHandler = () => dispatch(signOutStart());
 
   return (
     <>
@@ -34,7 +34,7 @@ const Navigation = () => {
             </NavigationItem>
             {isAuthenticated ? (
               <NavigationItem>
-                <NavigationLink as="span" onClick={logoutHandler}>
+                <NavigationLink as="span" onClick={signOutHandler}>
                   Sign Out
                 </NavigationLink>
               </NavigationItem>
