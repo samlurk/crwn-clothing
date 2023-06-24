@@ -7,7 +7,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import {
   googleSignInStart,
   usernameSignInStart,
-} from "../../store/Auth/action";
+} from "../../store/Auth/reducer";
 import { useDispatch } from "react-redux";
 
 const SignInForm = () => {

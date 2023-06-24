@@ -7,15 +7,13 @@ import {
   Title,
   Price,
 } from "./index.styles";
-import { addItemToCart } from "../../store/Cart/action";
-import { useDispatch, useSelector } from "react-redux";
-import { selectCartItems } from "../../store/Cart/selector";
+import { addItemToCart } from "../../store/Cart/reducer";
+import { useDispatch } from "react-redux";
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const { title, price, imageUrl } = product;
-  const cartItems = useSelector(selectCartItems);
-  const addProductToCart = () => dispatch(addItemToCart(cartItems, product));
+  const addProductToCart = () => dispatch(addItemToCart(product));
 
   return (
     <ProductContainer>

@@ -7,9 +7,7 @@ import Checkout from "./containers/Checkout";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectToken } from "./store/Auth/selector";
-import { checkUserSession } from "./store/Auth/action";
-import { selectCurrentUser } from "./store/User/selector";
-import { selectCartItems } from "./store/Cart/selector";
+import { checkUserSession } from "./store/Auth/reducer";
 
 const App = () => {
   const dispatch = useDispatch();

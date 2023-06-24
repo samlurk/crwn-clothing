@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import CategoryList from "../../components/Category/CategoryList";
-import { fetchCategoriesStart } from "../../store/Categories/action";
+import { fetchCategories } from "../../store/Categories/reducer";
 import {
   selectCategories,
   selectCategoryIsLoading,
@@ -14,7 +14,7 @@ function Home() {
   const isLoading = useSelector(selectCategoryIsLoading);
 
   useEffect(() => {
-    dispatch(fetchCategoriesStart());
+    dispatch(fetchCategories());
   }, []);
 
   return (

@@ -1,12 +1,13 @@
 import { takeLatest, all, call, put } from "redux-saga/effects";
 import httpService from "../../services/Http";
 import {
-  fetchCategoriesSucess,
+  fetchCategories,
   fetchCategoriesFailed,
-  fetchProductsByCategoriesSucess,
+  fetchCategoriesSucess,
+  fetchProductsByCategories,
   fetchProductsByCategoriesFailed,
-} from "./action";
-import { CATEGORIES_ACTION_TYPES } from "./types";
+  fetchProductsByCategoriesSucess,
+} from "./reducer";
 
 export function* fetchCategoriesAsync() {
   try {
@@ -18,10 +19,7 @@ export function* fetchCategoriesAsync() {
 }
 
 export function* onFetchCategories() {
-  yield takeLatest(
-    CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START,
-    fetchCategoriesAsync
-  );
+  yield takeLatest(fetchCategories.type, fetchCategoriesAsync);
 }
 
 export function* fetchProductsByCategoriesAsync() {
@@ -38,10 +36,10 @@ export function* fetchProductsByCategoriesAsync() {
 
 export function* onFetchProductsByCategories() {
   yield takeLatest(
-    CATEGORIES_ACTION_TYPES.FETCH_PRODUCTS_BY_CATEGORIES_START,
+    fetchProductsByCategories.type,
     fetchProductsByCategoriesAsync
   );
 }
-export function* categoriesSaga() {
+export function* categorySaga() {
   yield all([call(onFetchCategories), call(onFetchProductsByCategories)]);
 }

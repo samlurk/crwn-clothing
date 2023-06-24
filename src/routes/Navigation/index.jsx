@@ -10,7 +10,7 @@ import {
   Header,
   LogoContainer,
 } from "./index.styles";
-import { signOutStart } from "../../store/Auth/action";
+import { signOutStart } from "../../store/Auth/reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken } from "../../store/Auth/selector";
 import { selectIsCartOpen } from "../../store/Cart/selector";

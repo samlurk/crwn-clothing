@@ -1,5 +1,4 @@
 import { takeLatest, put, all, call } from "redux-saga/effects";
-import { AUTH_ACTION_TYPES } from "./types";
 import {
   signInSucess,
   signInFailed,
@@ -7,17 +6,14 @@ import {
   signUpSucess,
   signUpFailed,
   signOutSucess,
-} from "./action";
+  googleSignInStart,
+  usernameSignInStart,
+  checkUserSession,
+  signUpStart,
+} from "./reducer";
 import httpService from "../../services/Http";
-import jwtDecode from "jwt-decode";
-import { setCurrentUser } from "../User/action";
-
-export function* setCurrentUserAfterSignInOrSignUp({ payload }) {
-  yield put(setCurrentUser(jwtDecode(payload)));
-}
 
 export function* signOut() {
-  yield put(setCurrentUser(null));
   yield put(signOutSucess());
 }
 
@@ -74,49 +70,30 @@ export function* signInWithUsername({ payload: { username, password } }) {
 }
 
 export function* onGoogleSignInStart() {
-  yield takeLatest(AUTH_ACTION_TYPES.GOOGLE_SIGN_IN_START, signInWithGoogle);
+  yield takeLatest(googleSignInStart.type, signInWithGoogle);
 }
 
 export function* onUsernameSignInStart() {
-  yield takeLatest(
-    AUTH_ACTION_TYPES.USERNAME_SIGN_IN_START,
-    signInWithUsername
-  );
-}
-
-export function* onSignInSucess() {
-  yield takeLatest(
-    AUTH_ACTION_TYPES.SIGN_IN_SUCESS,
-    setCurrentUserAfterSignInOrSignUp
-  );
-}
-
-export function* onSignUpSucess() {
-  yield takeLatest(
-    AUTH_ACTION_TYPES.SIGN_UP_SUCESS,
-    setCurrentUserAfterSignInOrSignUp
-  );
+  yield takeLatest(usernameSignInStart.type, signInWithUsername);
 }
 
 export function* onCheckUserSession() {
-  yield takeLatest(AUTH_ACTION_TYPES.CHECK_USER_SESSION, isUserAuthenticated);
+  yield takeLatest(checkUserSession.type, isUserAuthenticated);
 }
 
 export function* onSignUpStart() {
-  yield takeLatest(AUTH_ACTION_TYPES.SIGN_UP_START, signUp);
+  yield takeLatest(signUpStart.type, signUp);
 }
 
 export function* onSignOutStart() {
-  yield takeLatest(AUTH_ACTION_TYPES.SIGN_OUT_START, signOut);
+  yield takeLatest(signOutStart.type, signOut);
 }
 export function* authSaga() {
   yield all([
     call(onCheckUserSession),
     call(onGoogleSignInStart),
     call(onUsernameSignInStart),
-    call(onSignInSucess),
     call(onSignUpStart),
-    call(onSignUpSucess),
     call(onSignOutStart),
   ]);
 }
