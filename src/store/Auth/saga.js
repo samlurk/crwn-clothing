@@ -21,8 +21,7 @@ export function* isUserAuthenticated({ payload }) {
   try {
     const { token } = yield call(
       httpService.get,
-      "auth/verify-token",
-      "",
+      "auth/verify-session",
       payload
     );
     yield put(signInSucess(token));

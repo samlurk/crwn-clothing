@@ -6,22 +6,28 @@ export const addCartItem = (cartItems, productToAdd) => {
   let [...items] = cartItems;
   const [isFound] = [
     ...cartItems.filter((item, index) => {
-      if (item.id === productToAdd.id) {
+      if (item.product.id === productToAdd.id) {
         items[index].quantity++;
+        items[index].total = items[index].total + productToAdd.price;
         return item;
       }
     }),
   ];
-  if (!isFound) items = [...items, { ...productToAdd, quantity: 1 }];
+  if (!isFound)
+    items = [
+      ...items,
+      { product: { ...productToAdd }, quantity: 1, total: productToAdd.price },
+    ];
   return items;
 };
 
 export const removeCartItem = (cartItems, cartItemToRemove) => {
   return cartItems.filter((item) => {
-    if (item.id !== cartItemToRemove.id) {
+    if (item.product.id !== cartItemToRemove.id) {
       return item;
     } else {
       item.quantity--;
+      item.total = item.total - cartItemToRemove.price;
       if (item.quantity > 0) {
         return item;
       }
@@ -30,12 +36,14 @@ export const removeCartItem = (cartItems, cartItemToRemove) => {
 };
 
 export const clearCartItem = (cartItems, id) => {
-  return cartItems.filter((item) => item.id !== id);
+  return cartItems.filter((item) => item.product.id !== id);
 };
 
 const CART_INITIAL_STATE = {
   isCartOpen: false,
   cartItems: [],
+  isLoading: false,
+  error: null,
 };
 
 export const cartSlice = createSlice({
@@ -54,6 +62,69 @@ export const cartSlice = createSlice({
     clearItemFromCart(state, action) {
       state.cartItems = clearCartItem(state.cartItems, action.payload);
     },
+    addItemToCartStart(state) {
+      state.isLoading = true;
+      state.error = null;
+    },
+    addItemToCartFailed(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    addItemToCartSucess(state, action) {
+      state.isLoading = false;
+      state.cartItems = action.payload;
+    },
+    removeItemToCartStart(state) {
+      state.isLoading = true;
+      state.error = null;
+    },
+    removeItemToCartFailed(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    removeItemToCartSucess(state, action) {
+      state.isLoading = false;
+      state.cartItems = action.payload;
+    },
+    clearItemFromCartStart(state) {
+      state.isLoading = true;
+      state.error = null;
+    },
+    clearItemFromCartFailed(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    clearItemFromCartSucess(state, action) {
+      state.isLoading = false;
+      state.cartItems = action.payload;
+    },
+    clearAllItemsFromCart(state) {
+      state.cartItems = [];
+    },
+    addItemsToCartStart(state) {
+      state.isLoading = true;
+      state.error = null;
+    },
+    addItemsToCartFailed(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    addItemsToCartSucess(state, action) {
+      state.isLoading = false;
+      state.cartItems = action.payload;
+    },
+    fetchCartItemsStart(state, _) {
+      state.isLoading = true;
+    },
+    fetchCartItemsFailed(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    fetchCartItemsSucess(state, action) {
+      state.isLoading = false;
+      state.cartItems = action.payload;
+      state.error = null;
+    },
   },
 });
 
@@ -62,6 +133,22 @@ export const {
   addItemToCart,
   removeItemToCart,
   clearItemFromCart,
+  addItemToCartStart,
+  addItemsToCartStart,
+  removeItemToCartStart,
+  clearItemFromCartStart,
+  addItemToCartFailed,
+  addItemsToCartFailed,
+  removeItemToCartFailed,
+  clearItemFromCartFailed,
+  addItemToCartSucess,
+  addItemsToCartSucess,
+  removeItemToCartSucess,
+  clearItemFromCartSucess,
+  clearAllItemsFromCart,
+  fetchCartItemsStart,
+  fetchCartItemsFailed,
+  fetchCartItemsSucess,
 } = cartSlice.actions;
 
 export const cartReducer = cartSlice.reducer;

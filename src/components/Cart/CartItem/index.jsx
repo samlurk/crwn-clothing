@@ -5,7 +5,10 @@ import {
 } from "./index.styles";
 
 const CartItem = ({ cartItem }) => {
-  const { title, imageUrl, price, quantity } = cartItem;
+  const {
+    product: { title, imageUrl, price },
+    quantity,
+  } = cartItem;
   return (
     <CartItemContainer>
       <CartItemImg src={imageUrl} alt={`${title}`} />

@@ -4,19 +4,19 @@ import FormInput from "../FormInput";
 import { SignUp, Title, Form } from "./index.styles";
 import Button from "../Button";
 import { useDispatch } from "react-redux";
+import { signUpStart } from "../../store/Auth/reducer";
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
-  // const onSubmit = async (values, actions) => {
-  //   try {
-  //     const { confirmPassword, ...formData } = values;
-  //     const { ACCESS_TOKEN } = await httpService.post("auth/signup", formData);
-  //     dispatch(login(ACCESS_TOKEN));
-  //     actions.resetForm();
-  //   } catch (error) {
-  //     alert(error.message);
-  //   }
-  // };
+  const onSubmit = async (values, actions) => {
+    try {
+      const { confirmPassword, ...formData } = values;
+      dispatch(signUpStart(formData));
+      actions.resetForm();
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -28,13 +28,14 @@ const SignUpForm = () => {
         confirmPassword: "",
       },
       validationSchema: SignUpSchema,
+      onSubmit,
     });
 
   return (
     <SignUp>
       <Title>Don't have an account?</Title>
       <span>Sign up with your email and password</span>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <FormInput
           label="First Name"
           type="text"

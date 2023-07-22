@@ -7,13 +7,17 @@ import {
   Title,
   Price,
 } from "./index.styles";
-import { addItemToCart } from "../../store/Cart/reducer";
-import { useDispatch } from "react-redux";
+import { addItemToCart, addItemToCartStart } from "../../store/Cart/reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { selectToken } from "../../store/Auth/selector";
 
 const ProductCard = ({ product }) => {
+  const isAuthenticated = useSelector(selectToken);
   const dispatch = useDispatch();
-  const { title, price, imageUrl } = product;
-  const addProductToCart = () => dispatch(addItemToCart(product));
+  const { id, title, price, imageUrl, inventory } = product;
+
+  const addProductToCart = () =>
+    dispatch(isAuthenticated ? addItemToCartStart(id) : addItemToCart(product));
 
   return (
     <ProductContainer>
@@ -22,12 +26,14 @@ const ProductCard = ({ product }) => {
         <Title>{title}</Title>
         <Price>${price}</Price>
       </Footer>
-      <ProductButton
-        buttonType={BUTTON_TYPE_CLASSES.inverted}
-        onClick={addProductToCart}
-      >
-        Add to card
-      </ProductButton>
+      {inventory !== 0 && (
+        <ProductButton
+          buttonType={BUTTON_TYPE_CLASSES.inverted}
+          onClick={addProductToCart}
+        >
+          Add to card
+        </ProductButton>
+      )}
     </ProductContainer>
   );
 };

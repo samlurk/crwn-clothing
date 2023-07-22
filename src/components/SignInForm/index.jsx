@@ -13,14 +13,19 @@ import { useDispatch } from "react-redux";
 const SignInForm = () => {
   const dispatch = useDispatch();
   const onSubmit = async (values, actions) => {
-    dispatch(usernameSignInStart(values));
-    actions.resetForm();
+    try {
+      dispatch(usernameSignInStart(values));
+      actions.resetForm();
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const signInWithGoogle = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) =>
       dispatch(googleSignInStart(codeResponse)),
+    onError: ({ error_description }) => alert(error_description),
   });
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
