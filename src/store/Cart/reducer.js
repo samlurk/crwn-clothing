@@ -70,9 +70,8 @@ export const cartSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    addItemToCartSucess(state, action) {
+    addItemToCartSucess(state) {
       state.isLoading = false;
-      state.cartItems = action.payload;
     },
     removeItemToCartStart(state) {
       state.isLoading = true;
@@ -82,9 +81,8 @@ export const cartSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    removeItemToCartSucess(state, action) {
+    removeItemToCartSucess(state) {
       state.isLoading = false;
-      state.cartItems = action.payload;
     },
     clearItemFromCartStart(state) {
       state.isLoading = true;
@@ -94,9 +92,8 @@ export const cartSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    clearItemFromCartSucess(state, action) {
+    clearItemFromCartSucess(state) {
       state.isLoading = false;
-      state.cartItems = action.payload;
     },
     clearAllItemsFromCart(state) {
       state.cartItems = [];
@@ -109,9 +106,8 @@ export const cartSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    addItemsToCartSucess(state, action) {
+    addItemsToCartSucess(state) {
       state.isLoading = false;
-      state.cartItems = action.payload;
     },
     fetchCartItemsStart(state, _) {
       state.isLoading = true;

@@ -28,6 +28,7 @@ export function* addItemsToCartAsync({ payload }) {
     });
 
     yield call(httpService.put, `cart-item/bulk/add`, { cartItems }, token);
+    yield put(addItemsToCartSucess());
   } catch (error) {
     yield put(addItemToCartFailed(error.message));
   }
@@ -36,6 +37,7 @@ export function* clearItemFromCartAsync({ payload }) {
   try {
     const token = yield select(selectToken);
     yield call(httpService.delete, `cart-item/clear/${payload}`, token);
+    yield put(clearItemFromCartSucess());
   } catch (error) {
     yield put(clearItemFromCartFailed(error.message));
   }
@@ -44,6 +46,7 @@ export function* removeItemToCartAsync({ payload }) {
   try {
     const token = yield select(selectToken);
     yield call(httpService.get, `cart-item/remove/${payload}`, token);
+    yield put(removeItemToCartSucess());
   } catch (error) {
     yield put(removeItemToCartFailed(error.message));
   }
@@ -53,6 +56,7 @@ export function* addItemToCartAsync({ payload }) {
   try {
     const token = yield select(selectToken);
     yield call(httpService.get, `cart-item/add/${payload}`, token);
+    yield put(addItemToCartSucess());
   } catch (error) {
     yield put(addItemToCartFailed(error.message));
   }
@@ -64,7 +68,11 @@ export function* fetchCartItems() {
     const cartItemsResponse = yield call(httpService.get, `cart-item`, token);
     yield put(fetchCartItemsSucess(cartItemsResponse));
   } catch (error) {
-    yield put(fetchCartItemsFailed(error.message));
+    if (error.message === "cart-item/no-cart-item-found") {
+      yield put(fetchCartItemsSucess([]));
+    } else {
+      yield put(fetchCartItemsFailed(error.message));
+    }
   }
 }
 
