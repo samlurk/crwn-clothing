@@ -10,6 +10,7 @@ import {
 import { addItemToCart, addItemToCartStart } from "../../store/Cart/reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken } from "../../store/Auth/selector";
+import ProductStock from "../ProductStock";
 
 const ProductCard = ({ product }) => {
   const isAuthenticated = useSelector(selectToken);
@@ -26,14 +27,14 @@ const ProductCard = ({ product }) => {
         <Title>{title}</Title>
         <Price>${price}</Price>
       </Footer>
-      {inventory !== 0 && (
+      <ProductStock stock={inventory}>
         <ProductButton
           buttonType={BUTTON_TYPE_CLASSES.inverted}
           onClick={addProductToCart}
         >
           Add to card
         </ProductButton>
-      )}
+      </ProductStock>
     </ProductContainer>
   );
 };
