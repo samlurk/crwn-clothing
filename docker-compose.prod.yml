@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  frontend:
+      container_name: crwn-clothing-frontend-prod
+      build: 
+        context: .
+        dockerfile: ./Dockerfile
+      volumes:
+        - nginx-logs:/var/log/nginx/
+      env_file: .env
+      ports:
+        - "80:${VITE_PORT}"
+      networks:
+      - crwn-clothing
+volumes:
+  nginx-logs:
+networks:
+  crwn-clothing:
+    external: true

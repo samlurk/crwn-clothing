@@ -24,9 +24,7 @@ FROM node:latest as build
 
 WORKDIR /usr/src/app
 
-COPY  package.json ./
-
-COPY --from=development /usr/src/app/node_modules ./node_modules
+COPY --from=development /usr/src/app/ .
 
 RUN yarn run build
 
